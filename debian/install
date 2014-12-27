@@ -1,0 +1,5 @@
+locale/*	    /usr/share/locale
+changelog.gz        /usr/share/doc/antix-goodies
+copyright           /usr/share/doc/antix-goodies
+bin/*               /usr/local/bin 
+

@@ -1,0 +1,146 @@
+antix-goodies (0.4.8.1) unstable; urgency=low 
+ 
+  * Fixed antiX-paste wgetpaste link.
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 20 Apr 2014 18:10:00 +0200
+
+
+antix-goodies (0.4.8) unstable; urgency=low 
+ 
+  * Updated flashplayer for older boxes.
+
+ -- anticapitalista <antiX@operamail.com>  Tue, 11 Mar 2014 15:40:00 +0200
+
+
+antix-goodies (0.4.7) unstable; urgency=low 
+ 
+  * Removed exoodles.
+  * use dpkg-buildpackage.
+
+ -- anticapitalista <antiX@operamail.com>  Thu, 17 Oct 2013 20:15:00 +0200
+
+
+antix-goodies (0.4.6) unstable; urgency=low 
+ 
+  * Changed ownership to root:root.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 05 May 2013 23:15:00 +0200
+
+
+antix-goodies (0.4.5) unstable; urgency=low 
+ 
+  * Added fancy-prompts.bash and fancy-prompts.zsh
+
+ -- anticapitalista <antiX@operamail.com>  Sat, 27 April 2013 14:55:00 +0200
+
+
+antix-goodies (0.4.4) unstable; urgency=low 
+ 
+  * Separte packages for 32 and 64 bit.
+
+ -- anticapitalista <antiX@operamail.com>  Mon, 15 April 2013 19:05:00 +0200
+
+
+antix-goodies (0.4.3) unstable; urgency=low 
+ 
+  * Added flashplayer-selector.sh.
+  * Included flashplayer_10_3r183_61_linux.tar.gz 
+
+ -- anticapitalista <antiX@operamail.com>  Mon, 08 April 2013 19:05:00 +0200
+
+
+antix-goodies (0.4.2) unstable; urgency=low 
+ 
+  * Added localisations.
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 27 January 2013 20:55:00 +0200
+
+
+antix-goodies (0.4.1) unstable; urgency=low 
+ 
+  * Newer version of fancy-prompts.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 12 December 2012 23:50:00 +0200
+
+
+antix-goodies (0.4.0) unstable; urgency=low 
+ 
+  * Removed ktsuss, sudoku-savant, youtube-viewer.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 10 October 2012 15:10:00 +0200
+
+
+antix-goodies (0.3.1) unstable; urgency=low 
+ 
+  * Fixed ownership bug.
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 26 August 2012 15:40:00 +0200
+
+
+antix-goodies (0.3.0) unstable; urgency=low 
+ 
+  * Added perl libs necessary for youtube-viewer.
+  * Edited zram script.
+
+ -- anticapitalista <antiX@operamail.com> Sat, 11 August 2012 17:45:00 +0200
+
+
+antix-goodies (0.2.1.7) unstable; urgency=low 
+ 
+  * Added copyright notice.
+  * Update ps_mem.py
+  * Update zram.
+  * Removed recorder, fontscheck.
+
+ -- anticapitalista <antiX@operamail.com> Mon, 23 July 2012 15:30:00 +0200
+
+
+antix-goodies (0.2.1.6) unstable; urgency=low 
+
+  * Added zram.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 06 June 2012 13:30:00 +0200
+
+
+antix-goodies (0.2.1.5) unstable; urgency=low 
+
+  * Added ktsuss.
+  * Added youtube-viewer.
+
+ -- anticapitalista <antiX@operamail.com>  Thu, 31 May 2012 14:30:00 +0200
+
+
+antix-goodies (0.2.1.4) unstable; urgency=low 
+
+  * Added localisation.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 25 April 2012 12:30:00 +0200
+
+
+antix-goodies (0.2.1.3) unstable; urgency=low 
+
+  * Changed dependency list in control file.
+
+ -- anticapitalista <antiX@operamail.com>  Mon, 02 April 2012 22:30:00 +0200
+
+
+antix-goodies (0.2.1.2) unstable; urgency=low 
+
+  * Removed ranger (it is in Debian repo).
+
+ -- anticapitalista <antiX@operamail.com>  Thu, 15 March 2012 12:30:00 +0200
+
+
+antix-goodies (0.2.1.1) unstable; urgency=low 
+
+  * Removed devmon (better to use spacefm file manager instead).
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 29 February 2012 14:30:00 +0200
+
+
+antix-goodies (0.1.1) unstable; urgency=low 
+ 
+  * Initial Release.
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 29 January 2012 15:30:00 +0200
+
