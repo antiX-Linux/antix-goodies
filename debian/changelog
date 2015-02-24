@@ -1,3 +1,10 @@
+antix-goodies (0.4.9) unstable; urgency=low 
+ 
+  * Included start-t time time startup apps.
+
+ -- anticapitalista <antiX@operamail.com>  Tue, 24 Feb 2015 16:54:00 +0200
+
+
 antix-goodies (0.4.8.1) unstable; urgency=low 
  
   * Fixed antiX-paste wgetpaste link.
