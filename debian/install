@@ -2,4 +2,5 @@ locale/*	    /usr/share/locale
 changelog.gz        /usr/share/doc/antix-goodies
 copyright           /usr/share/doc/antix-goodies
 bin/*               /usr/local/bin 
-
+Sound_Card.desktop  /usr/share/applications/antix 
+audacity.png        /usr/share/pixmaps

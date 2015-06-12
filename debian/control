@@ -7,7 +7,7 @@ Standards-Version: 3.9.4
 Homepage: http://antix.mepis.org
 
 Package: antix-goodies
-Architecture: amd64
+Architecture: i386
 Depends: perl, wodim, yad, pmount
 Description: Various useful scripts for antiX.
  Includes:
@@ -17,3 +17,4 @@ Description: Various useful scripts for antiX.
   * zram (script to set up zram)
   * ps_mem.py (RAM usage script)
   * unplugdrive.sh (enables unmounting prior to unplugging removable storage)
+  * alsa-set-default-card (helps user set default sound card if more than one is available)

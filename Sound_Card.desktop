@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Sound Card
+Name[el]=Κάρτα ήχου
+Comment=Select sound card to use.
+Comment[el]=Επιλέξτε την κάρτα ήχου
+Exec=alsa-set-default-card
+Icon=audacity.png
+Terminal=false
+Type=Application
+Categories=Settings;
+NoDisplay=False

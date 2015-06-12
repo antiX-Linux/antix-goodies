@@ -1,8 +1,16 @@
 antix-goodies (0.4.9) unstable; urgency=low 
  
-  * Included start-t time time startup apps.
+  * Added audacity icon
 
- -- anticapitalista <antiX@operamail.com>  Tue, 24 Feb 2015 16:54:00 +0200
+ -- anticapitalista <antiX@operamail.com>  Wed, 29 Apr 2015 19:34:00 +0200
+
+
+antix-goodies (0.4.8.2) unstable; urgency=low 
+ 
+  * Added alsa-set-default-card and its desktop file.
+  * Included start-t script.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 11 Mar 2015 15:53:00 +0200
 
 
 antix-goodies (0.4.8.1) unstable; urgency=low 
