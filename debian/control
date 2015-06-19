@@ -7,7 +7,7 @@ Standards-Version: 3.9.4
 Homepage: http://antix.mepis.org
 
 Package: antix-goodies
-Architecture: i386
+Architecture: amd64
 Depends: perl, wodim, yad, pmount
 Description: Various useful scripts for antiX.
  Includes:
