@@ -9,4 +9,4 @@ Icon=audacity.png
 Terminal=false
 Type=Application
 Categories=Settings;
-NoDisplay=False
+NoDisplay=True
