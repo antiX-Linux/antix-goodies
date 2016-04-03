@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/usr/bin/yad "$@" 2>/dev/null

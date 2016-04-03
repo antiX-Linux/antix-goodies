@@ -15,9 +15,7 @@
 
 start() {
     # get the number of CPUs
-    num_cpus=$(grep -c processor /proc/cpuinfo)
-    # if something goes wrong, assume we have 1
-    [ "$num_cpus" != 0 ] || num_cpus=1
+    num_cpus=$(nproc --all)
 
     # set decremented number of CPUs
     last_cpu=$((num_cpus - 1))
@@ -51,7 +49,7 @@ start() {
     echo "zram devices probed successfully"
     
     # initialize the devices
-    for i in $(seq 0 $last_cpu); do
+    for i in $(seq 1 $last_cpu); do
     echo $mem_by_cpu > /sys/block/zram$i/disksize
     # Creating swap filesystems
     mkswap /dev/zram$i
@@ -62,13 +60,13 @@ start() {
 
 stop() {
     # get the number of CPUs
-    num_cpus=$(grep -c processor /proc/cpuinfo)
+    num_cpus=$(nproc --all)
 
     # set decremented number of CPUs
     last_cpu=$((num_cpus - 1))
 
     # Switching off swap
-    for i in $(seq 0 $last_cpu); do
+    for i in $(seq 1 $last_cpu); do
     if [ "$(grep /dev/zram$i /proc/swaps)" != "" ]; then
     swapoff /dev/zram$i
     sleep 1

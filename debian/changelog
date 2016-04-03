@@ -1,6 +1,44 @@
+antix-goodies (0.5.5) unstable; urgency=low 
+ 
+  * BroadcomStartup BCM4311 bug fix
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 20 Mar 2016 20:04:00 +0200
+
+
+antix-goodies (0.5.4) unstable; urgency=low 
+ 
+  * Edits to env-info
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 17 Feb 2016 14:57:00 +0200
+
+
+antix-goodies (0.5.3) unstable; urgency=low 
+ 
+  * Improvements to zram as suggested by SamK
+
+ -- anticapitalista <antiX@operamail.com>  Fri, 15 Jan 2016 17:18:00 +0200
+
+
+antix-goodies (0.5.2) unstable; urgency=low 
+ 
+  * added env-info
+
+ -- anticapitalista <antiX@operamail.com>  Fri, 01 Jan 2016 23:15:00 +0200
+
+
+antix-goodies (0.5.1) unstable; urgency=low 
+ 
+  * Changed audacity.png to soundcard.png
+  * Added BroadcomStartup script
+  * Added guess-hwclock script
+  * Added yad script to remove unwanted messages
+
+ -- anticapitalista <antiX@operamail.com>  Tue, 29 Dec 2015 15:35:00 +0200
+
+
 antix-goodies (0.4.11) unstable; urgency=low 
  
-  * Don't show sound sard in menu
+  * Don't show sound card in menu
 
  -- anticapitalista <antiX@operamail.com>  Fri, 26 Jun 2015 20:57:00 +0200
 

@@ -7,8 +7,9 @@
 # The shared RAM is problematic to calculate, and this script automatically
 # selects the most accurate method available for your kernel.
 
-# Author: P@draigBrady.com
-# Source: http://www.pixelbeat.org/scripts/ps_mem.py
+# Licence: LGPLv2
+# Author:  P@draigBrady.com
+# Source:  http://www.pixelbeat.org/scripts/ps_mem.py
 
 # V1.0      06 Jul 2005     Initial release
 # V1.1      11 Aug 2006     root permission required for accuracy
@@ -35,7 +36,7 @@
 #                           Patch from patrice.bouchand.fedora@gmail.com
 # V1.9      20 Feb 2008     Fix invalid values reported when PSS is available.
 #                           Reported by Andrey Borzenkov <arvidjaar@mail.ru>
-# V2.7      20 May 2011
+# V3.5      29 Sep 2015
 #   http://github.com/pixelb/scripts/commits/master/scripts/ps_mem.py
 
 # Notes:
@@ -78,16 +79,6 @@ import errno
 import os
 import sys
 
-try:
-    # md5 module is deprecated on python 2.6
-    # so try the newer hashlib first
-    import hashlib
-    md5_new = hashlib.md5
-except ImportError:
-    import md5
-    md5_new = md5.new
-
-
 # The following exits cleanly on Ctrl-C or EPIPE
 # while treating other exceptions as before.
 def std_exceptions(etype, value, tb):
@@ -103,16 +94,38 @@ sys.excepthook = std_exceptions
 #
 #   Define some global variables
 #
-uname = os.uname()
-if uname[0] == "FreeBSD":
-    proc = "/compat/linux/proc/"
-else:
-    proc = "/proc/"
 
 PAGESIZE = os.sysconf("SC_PAGE_SIZE") / 1024 #KiB
 our_pid = os.getpid()
 
 have_pss = 0
+
+class Proc:
+    def __init__(self):
+        uname = os.uname()
+        if uname[0] == "FreeBSD":
+            self.proc = '/compat/linux/proc'
+        else:
+            self.proc = '/proc'
+
+    def path(self, *args):
+        return os.path.join(self.proc, *(str(a) for a in args))
+
+    def open(self, *args):
+        try:
+            if sys.version_info < (3,):
+                return open(self.path(*args))
+            else:
+                return open(self.path(*args), errors='ignore')
+        except (IOError, OSError):
+            val = sys.exc_info()[1]
+            if (val.errno == errno.ENOENT or # kernel thread or process gone
+                val.errno == errno.EPERM):
+                raise LookupError
+            raise
+
+proc = Proc()
+
 
 #
 #   Functions
@@ -120,60 +133,72 @@ have_pss = 0
 
 def parse_options():
     try:
-        long_options = ['split-args', 'help']
-        opts, args = getopt.getopt(sys.argv[1:], "shp:w:", long_options)
-    except getopt.GetoptError, e:
-        print help()
+        long_options = ['split-args', 'help', 'total']
+        opts, args = getopt.getopt(sys.argv[1:], "shtp:w:", long_options)
+    except getopt.GetoptError:
+        sys.stderr.write(help())
+        sys.exit(3)
+
+    if len(args):
+        sys.stderr.write("Extraneous arguments: %s\n" % args)
         sys.exit(3)
 
     # ps_mem.py options
     split_args = False
     pids_to_show = None
     watch = None
+    only_total = False
 
     for o, a in opts:
         if o in ('-s', '--split-args'):
             split_args = True
+        if o in ('-t', '--total'):
+            only_total = True
         if o in ('-h', '--help'):
-            print help()
+            sys.stdout.write(help())
             sys.exit(0)
         if o in ('-p',):
             try:
                 pids_to_show = [int(x) for x in a.split(',')]
             except:
-                print help()
+                sys.stderr.write(help())
                 sys.exit(3)
         if o in ('-w',):
             try:
                 watch = int(a)
             except:
-                print help()
+                sys.stderr.write(help())
                 sys.exit(3)
 
-    return (split_args, pids_to_show, watch)
+    return (split_args, pids_to_show, watch, only_total)
 
 def help():
-    help_msg = 'ps_mem.py - Show process memory usage\n'\
-    '\n'\
-    '-h                                 Show this help\n'\
-    '-w <N>                             Measure and show process memory every N seconds\n'\
-    '-p <pid>[,pid2,...pidN]            Only show memory usage PIDs in the specified list\n'
+    help_msg = 'Usage: ps_mem [OPTION]...\n' \
+    'Show program core memory usage\n' \
+    '\n' \
+    '  -h, -help                   Show this help\n' \
+    '  -p <pid>[,pid2,...pidN]     Only show memory usage PIDs in the specified list\n' \
+    '  -s, --split-args            Show and separate by, all command line arguments\n' \
+    '  -t, --total                 Show only the total value\n' \
+    '  -w <N>                      Measure and show process memory every N seconds\n'
 
     return help_msg
 
 #(major,minor,release)
 def kernel_ver():
-    kv = open(proc + "sys/kernel/osrelease", "rt").readline().split(".")[:3]
+    kv = proc.open('sys/kernel/osrelease').readline().split(".")[:3]
     last = len(kv)
     if last == 2:
         kv.append('0')
     last -= 1
-    for char in "-_":
-        kv[last] = kv[last].split(char)[0]
-    try:
-        int(kv[last])
-    except:
-        kv[last] = 0
+    while last > 0:
+        for char in "-_":
+            kv[last] = kv[last].split(char)[0]
+        try:
+            int(kv[last])
+        except:
+            kv[last] = 0
+        last -= 1
     return (int(kv[0]), int(kv[1]), int(kv[2]))
 
 
@@ -185,15 +210,14 @@ def getMemStats(pid):
     Private_lines = []
     Shared_lines = []
     Pss_lines = []
-    Rss = (int(open(proc + str(pid) + "/statm", "rt").readline().split()[1])
+    Rss = (int(proc.open(pid, 'statm').readline().split()[1])
            * PAGESIZE)
-    if os.path.exists(proc + str(pid) + "/smaps"): #stat
-        digester = md5_new()
-        for line in open(proc + str(pid) + "/smaps", "rb").readlines(): #open
-            # Note we checksum smaps as maps is usually but
-            # not always different for separate processes.
-            digester.update(line)
-            line = line.decode("ascii")
+    if os.path.exists(proc.path(pid, 'smaps')): #stat
+        lines = proc.open(pid, 'smaps').readlines() #open
+        # Note we checksum smaps as maps is usually but
+        # not always different for separate processes.
+        mem_id = hash(''.join(lines))
+        for line in lines:
             if line.startswith("Shared"):
                 Shared_lines.append(line)
             elif line.startswith("Private"):
@@ -201,7 +225,6 @@ def getMemStats(pid):
             elif line.startswith("Pss"):
                 have_pss = 1
                 Pss_lines.append(line)
-        mem_id = digester.hexdigest()
         Shared = sum([int(line.split()[1]) for line in Shared_lines])
         Private = sum([int(line.split()[1]) for line in Private_lines])
         #Note Shared + Private = Rss above
@@ -214,17 +237,30 @@ def getMemStats(pid):
         Shared = 0 #lots of overestimation, but what can we do?
         Private = Rss
     else:
-        Shared = int(open(proc+str(pid)+"/statm", "rt").readline().split()[2])
+        Shared = int(proc.open(pid, 'statm').readline().split()[2])
         Shared *= PAGESIZE
         Private = Rss - Shared
     return (Private, Shared, mem_id)
 
 
 def getCmdName(pid, split_args):
-    cmdline = open(proc+"%d/cmdline" % pid, "rt").read().split("\0")
+    cmdline = proc.open(pid, 'cmdline').read().split("\0")
     if cmdline[-1] == '' and len(cmdline) > 1:
         cmdline = cmdline[:-1]
-    path = os.path.realpath(proc+"%d/exe" % pid) #exception for kernel threads
+
+    path = proc.path(pid, 'exe')
+    try:
+        path = os.readlink(path)
+        # Some symlink targets were seen to contain NULs on RHEL 5 at least
+        # https://github.com/pixelb/scripts/pull/10, so take string up to NUL
+        path = path.split('\0')[0]
+    except OSError:
+        val = sys.exc_info()[1]
+        if (val.errno == errno.ENOENT or # either kernel thread or process gone
+            val.errno == errno.EPERM):
+            raise LookupError
+        raise
+
     if split_args:
         return " ".join(cmdline)
     if path.endswith(" (deleted)"):
@@ -240,24 +276,30 @@ def getCmdName(pid, split_args):
             else:
                 path += " [deleted]"
     exe = os.path.basename(path)
-    cmd = open(proc+"%d/status" % pid, "rt").readline()[6:-1]
+    cmd = proc.open(pid, 'status').readline()[6:-1]
     if exe.startswith(cmd):
         cmd = exe #show non truncated version
         #Note because we show the non truncated name
         #one can have separated programs as follows:
         #584.0 KiB +   1.0 MiB =   1.6 MiB    mozilla-thunder (exe -> bash)
         # 56.0 MiB +  22.2 MiB =  78.2 MiB    mozilla-thunderbird-bin
-    return cmd
+    if sys.version_info < (3,):
+        return cmd
+    else:
+        return cmd.encode(errors='replace').decode()
 
 
 #The following matches "du -h" output
 #see also human.py
-def human(num, power="Ki"):
-    powers = ["Ki", "Mi", "Gi", "Ti"]
-    while num >= 1000: #4 digits
-        num /= 1024.0
-        power = powers[powers.index(power)+1]
-    return "%.1f %s" % (num, power)
+def human(num, power="Ki", units=None):
+    if units is None:
+        powers = ["Ki", "Mi", "Gi", "Ti"]
+        while num >= 1000: #4 digits
+            num /= 1024.0
+            power = powers[powers.index(power)+1]
+        return "%.1f %sB" % (num, power)
+    else:
+        return "%.f" % ((num * 1024) / units)
 
 
 def cmd_with_count(cmd, count):
@@ -274,57 +316,60 @@ def cmd_with_count(cmd, count):
 def shared_val_accuracy():
     """http://wiki.apache.org/spamassassin/TopSharedMemoryBug"""
     kv = kernel_ver()
+    pid = os.getpid()
     if kv[:2] == (2,4):
-        if open(proc+"meminfo", "rt").read().find("Inact_") == -1:
+        if proc.open('meminfo').read().find("Inact_") == -1:
             return 1
         return 0
     elif kv[:2] == (2,6):
-        pid = str(os.getpid())
-        if os.path.exists(proc+pid+"/smaps"):
-            if open(proc+pid+"/smaps", "rt").read().find("Pss:")!=-1:
+        if os.path.exists(proc.path(pid, 'smaps')):
+            if proc.open(pid, 'smaps').read().find("Pss:")!=-1:
                 return 2
             else:
                 return 1
         if (2,6,1) <= kv <= (2,6,9):
             return -1
         return 0
-    elif kv[0] > 2:
+    elif kv[0] > 2 and os.path.exists(proc.path(pid, 'smaps')):
         return 2
     else:
         return 1
 
-def show_shared_val_accuracy( possible_inacc ):
-    if vm_accuracy == -1:
+def show_shared_val_accuracy( possible_inacc, only_total=False ):
+    level = ("Warning","Error")[only_total]
+    if possible_inacc == -1:
         sys.stderr.write(
-         "Warning: Shared memory is not reported by this system.\n"
+         "%s: Shared memory is not reported by this system.\n" % level
         )
         sys.stderr.write(
          "Values reported will be too large, and totals are not reported\n"
         )
-    elif vm_accuracy == 0:
+    elif possible_inacc == 0:
         sys.stderr.write(
-         "Warning: Shared memory is not reported accurately by this system.\n"
+         "%s: Shared memory is not reported accurately by this system.\n" % level
         )
         sys.stderr.write(
          "Values reported could be too large, and totals are not reported\n"
         )
-    elif vm_accuracy == 1:
+    elif possible_inacc == 1:
         sys.stderr.write(
-         "Warning: Shared memory is slightly over-estimated by this system\n"
-         "for each program, so totals are not reported.\n"
+         "%s: Shared memory is slightly over-estimated by this system\n"
+         "for each program, so totals are not reported.\n" % level
         )
     sys.stderr.close()
+    if only_total and possible_inacc != 2:
+        sys.exit(1)
 
 def get_memory_usage( pids_to_show, split_args, include_self=False, only_self=False ):
     cmds = {}
     shareds = {}
     mem_ids = {}
     count = {}
-    for pid in os.listdir(proc):
+    for pid in os.listdir(proc.path('')):
         if not pid.isdigit():
             continue
         pid = int(pid)
-        
+
         # Some filters
         if only_self and pid != our_pid:
             continue
@@ -332,18 +377,18 @@ def get_memory_usage( pids_to_show, split_args, include_self=False, only_self=Fa
             continue
         if pids_to_show is not None and pid not in pids_to_show:
             continue
-        
+
         try:
             cmd = getCmdName(pid, split_args)
-        except:
-            #permission denied or
+        except LookupError:
+            #operation not permitted
             #kernel threads don't have exe links or
             #process gone
             continue
-        
+
         try:
             private, shared, mem_id = getMemStats(pid)
-        except:
+        except RuntimeError:
             continue #process gone
         if shareds.get(cmd):
             if have_pss: #add shared portion of PSS together
@@ -372,23 +417,22 @@ def get_memory_usage( pids_to_show, split_args, include_self=False, only_self=Fa
         cmds[cmd] = cmds[cmd] + shareds[cmd]
         total += cmds[cmd] #valid if PSS available
 
-    sorted_cmds = cmds.items()
-    sorted_cmds.sort(lambda x, y:cmp(x[1], y[1]))
+    sorted_cmds = sorted(cmds.items(), key=lambda x:x[1])
     sorted_cmds = [x for x in sorted_cmds if x[1]]
 
     return sorted_cmds, shareds, count, total
 
 def print_header():
-    sys.stdout.write(" Private  +   Shared  =  RAM used\tProgram \n\n")
+    sys.stdout.write(" Private  +   Shared  =  RAM used\tProgram\n\n")
 
 def print_memory_usage(sorted_cmds, shareds, count, total):
     for cmd in sorted_cmds:
-        sys.stdout.write("%8sB + %8sB = %8sB\t%s\n" %
+        sys.stdout.write("%9s + %9s = %9s\t%s\n" %
                          (human(cmd[1]-shareds[cmd[0]]),
                           human(shareds[cmd[0]]), human(cmd[1]),
                           cmd_with_count(cmd[0], count[cmd[0]])))
     if have_pss:
-        sys.stdout.write("%s\n%s%8sB\n%s\n" %
+        sys.stdout.write("%s\n%s%9s\n%s\n" %
                          ("-" * 33, " " * 24, human(total), "=" * 33))
 
 def verify_environment():
@@ -404,24 +448,28 @@ def verify_environment():
         val = sys.exc_info()[1]
         if val.errno == errno.ENOENT:
             sys.stderr.write(
-              "Couldn't access /proc\n"
+              "Couldn't access " + proc.path('') + "\n"
               "Only GNU/Linux and FreeBSD (with linprocfs) are supported\n")
             sys.exit(2)
         else:
             raise
 
 if __name__ == '__main__':
+    split_args, pids_to_show, watch, only_total = parse_options()
     verify_environment()
-    split_args, pids_to_show, watch = parse_options()
 
-    print_header()
+    if not only_total:
+        print_header()
 
     if watch is not None:
         try:
             sorted_cmds = True
             while sorted_cmds:
                 sorted_cmds, shareds, count, total = get_memory_usage( pids_to_show, split_args )
-                print_memory_usage(sorted_cmds, shareds, count, total)
+                if only_total and have_pss:
+                    sys.stdout.write(human(total, units=1)+'\n')
+                elif not only_total:
+                    print_memory_usage(sorted_cmds, shareds, count, total)
                 time.sleep(watch)
             else:
                 sys.stdout.write('Process does not exist anymore.\n')
@@ -430,8 +478,10 @@ if __name__ == '__main__':
     else:
         # This is the default behavior
         sorted_cmds, shareds, count, total = get_memory_usage( pids_to_show, split_args )
-        print_memory_usage(sorted_cmds, shareds, count, total)
-
+        if only_total and have_pss:
+            sys.stdout.write(human(total, units=1)+'\n')
+        elif not only_total:
+            print_memory_usage(sorted_cmds, shareds, count, total)
 
     # We must close explicitly, so that any EPIPE exception
     # is handled by our excepthook, rather than the default
@@ -439,4 +489,4 @@ if __name__ == '__main__':
     sys.stdout.close()
 
     vm_accuracy = shared_val_accuracy()
-    show_shared_val_accuracy( vm_accuracy )
+    show_shared_val_accuracy( vm_accuracy, only_total )
