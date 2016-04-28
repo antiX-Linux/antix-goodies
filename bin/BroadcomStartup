@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="BroadcomStartup-1.1 (Mar. 16, 2016)"
+version="BroadcomStartup-1.2 (Apr. 24, 2016)"
 
 # Check that user is root.
 [ $(id -u) -eq 0 ] || { echo -e $"\n\t You need to be root!\n" ; exit 1 ; }
@@ -112,7 +112,7 @@ else
       4307|4318|4319|4321|4322|4350|43a9|43aa|a8d6|a8db) b43Unblacklist
                                                          ;;
 
-                                              4311|4312) b43Unblacklist
+                                         4311|4312|4328) b43Unblacklist
                                                          ;;
 
                                          4301|4306|4325) b43legacyUnblacklist

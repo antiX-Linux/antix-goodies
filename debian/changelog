@@ -1,3 +1,15 @@
+antix-goodies (0.5.7) unstable; urgency=medium
+
+  * Added 4328 id to b43Unblacklist in BroadcomStartup script 
+
+ -- anticapitalista <antix@operamail.com>  Sun, 24 Apr 2016 22:04:44 +0300
+
+antix-goodies (0.5.6) unstable; urgency=medium
+
+  * Improved translations 
+
+ -- anticapitalista <antix@operamail.com>  Thu, 07 Apr 2016 14:59:19 +0300
+
 antix-goodies (0.5.5) unstable; urgency=low 
  
   * BroadcomStartup BCM4311 bug fix
