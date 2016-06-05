@@ -1,0 +1,29 @@
+#!/bin/bash
+
+fmt="%20s|%20s|%6s|%6s|%6s|%6s|%s\n"
+
+log_file=/var/log/live/boot-log.log
+[ $UID != 0 ] && log_file=$HOME/boot-log.log
+test -d $HOME/LiveUSB-Storage && log_file=$HOME/LiveUSB-Storage/boot-log.log
+
+main() {
+    test -e $log_file || printf "$fmt" date/time machine getty wm icons conky cmdline > $log_file
+
+    read mach 2>/dev/null </sys/class/dmi/id/product_name
+    getty_t=$(get_t getty)
+    icon_t=$(get_t "rox|space")
+      wm_t=$(get_t "icewm|fluxbox")
+   conky_t=$(get_t "conky")
+
+    date=$(date +"%F %T")
+    printf "$fmt" "$date" "${mach:0:20}" "$getty_t" "$wm_t" "$icon_t" "$conky_t" "$(cat /proc/cmdline)" | tee -a $log_file
+}
+
+get_t() {
+    prog=$1
+    pid=$(pgrep $prog | head -n1)
+    [ "$pid" ] && cut -d" " -f22 /proc/$pid/stat | sed -r 's/(..)$/.\1/'
+}
+
+main
+

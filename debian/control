@@ -7,14 +7,24 @@ Standards-Version: 3.9.4
 Homepage: http://antix.mepis.org
 
 Package: antix-goodies
-Architecture: amd64
+Architecture: all
 Depends: perl, wodim, yad, pmount
 Description: Various useful scripts for antiX.
  Includes:
-  * burniso (write an ISO image from cli)
-  * fancy-prompts (nine different colorful and interesting prompts)
-  * ps_initrd.sh (initrd packing/unpacking tool)
-  * zram (script to set up zram)
-  * ps_mem.py (RAM usage script)
-  * unplugdrive.sh (enables unmounting prior to unplugging removable storage)
   * alsa-set-default-card (helps user set default sound card if more than one is available)
+  * antiX-paste - antiX-wrapper to wgetpaste
+  * BroadcomStartup - auto-detect and set up correct drivers for broadcom networking
+  * env-info - very simple screen information scrip
+  * burniso (write an ISO image from cli)
+  * guess-hwclock - Guess whether the hardware clock is set to utc or to localtime 
+  * ps_initrd.sh - (initrd packing/unpacking tool)
+  * start-t - Display start time of all running processes from kernel boot
+  * time-x-start - Display times from boot of slim, windows manager, conky
+  * unplugdrive.sh (enables unmounting prior to unplugging removable storage)
+  * zram (script to set up zram)
+  * fancy-prompts (nine different colorful and interesting prompts)
+  * ps_mem.py (RAM usage script)
+  * boot-log - time boot to desktop
+  * colorview - echoes a bunch of color codes to the terminal (linuxbbq)
+  * netpro - save and switch network profiles (linuxbbq)
+  * paletterx - takes an image and creates a color palette from it - needs imagemagick (linuxbbq)

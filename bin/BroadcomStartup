@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="BroadcomStartup-1.2 (Apr. 24, 2016)"
+version="BroadcomStartup-1.3 (Apr. 30, 2016)"
 
 # Check that user is root.
 [ $(id -u) -eq 0 ] || { echo -e $"\n\t You need to be root!\n" ; exit 1 ; }
@@ -55,10 +55,10 @@ if [ -f /etc/modprobe.d/broadcom-sta-dkms.conf ]; then
   sed -i 's/blacklist b43$/#blacklist b43/;s/blacklist bcma/#blacklist bcma/;s/blacklist ssb/#blacklist ssb/' /etc/modprobe.d/broadcom-sta-dkms.conf
   sed -i -e "\$ablacklist wl" /etc/modprobe.d/broadcom-sta-dkms.conf
 
-  service network-manager stop
+  [ -x /etc/init.d/network-manager ] && service network-manager stop
   modprobe -r wl cfg80211
   modprobe b43
-  service network-manager start
+  [ -x /etc/init.d/network-manager ] && service network-manager start
   sleep 2  #(small delay and the networks show up)
   pkill wpa_supplicant
 
@@ -71,10 +71,10 @@ if [ -f /etc/modprobe.d/broadcom-sta-dkms.conf ]; then
   sed -i 's/blacklist b43legacy$/#blacklist b43legacy/;s/blacklist ssb/#blacklist ssb/' /etc/modprobe.d/broadcom-sta-dkms.conf
   sed -i -e "\$ablacklist wl" /etc/modprobe.d/broadcom-sta-dkms.conf
 
-  service network-manager stop
+  [ -x /etc/init.d/network-manager ] && service network-manager stop
   modprobe -r wl cfg80211
   modprobe b43legacy
-  service network-manager start
+  [ -x /etc/init.d/network-manager ] && service network-manager start
   sleep 2  #(small delay and the networks show up)
   pkill wpa_supplicant
 
@@ -87,10 +87,10 @@ if [ -f /etc/modprobe.d/broadcom-sta-dkms.conf ]; then
   sed -i 's/blacklist b44$/#blacklist b44/;s/blacklist ssb/#blacklist ssb/' /etc/modprobe.d/broadcom-sta-dkms.conf
   sed -i -e "\$ablacklist wl" /etc/modprobe.d/broadcom-sta-dkms.conf
 
-  service network-manager stop
+  [ -x / etc/init.d/network-manager ] && service network-manager stop
 
   modprobe b44
-  service network-manager start
+  [ -x /etc/init.d/network-manager ] && service network-manager start
   sleep 2  #(small delay and the networks show up)
   pkill wpa_supplicant
 

@@ -1,3 +1,30 @@
+antix-goodies (0.5.11) unstable; urgency=medium
+
+  * Added boot-log script 
+  * Added scripts from linuxbbq - colorview, netpro, paletterx 
+
+ -- anticapitalista <antix@operamail.com>  Sun, 05 Jun 2016 13:33:43 +0300
+
+antix-goodies (0.5.10) unreleased; urgency=medium
+
+  * Added uplugdrive translation for Swedish.
+  * Added Russian translation
+
+ -- anticapitalista <antix@operamail.com>  Mon, 30 May 2016 18:12:19 +0300
+
+antix-goodies (0.5.9) unstable; urgency=medium
+
+  * fixed space in / etc in BroadcomStartup script
+
+ -- anticapitalista <antix@operamail.com>  Mon, 16 May 2016 12:03:58 +0300
+
+antix-goodies (0.5.8) unstable; urgency=medium
+
+  * Added check statement on network-manager 
+  * Make deb for all architecture
+
+ -- anticapitalista <antix@operamail.com>  Sat, 30 Apr 2016 12:56:00 +0300
+
 antix-goodies (0.5.7) unstable; urgency=medium
 
   * Added 4328 id to b43Unblacklist in BroadcomStartup script 
