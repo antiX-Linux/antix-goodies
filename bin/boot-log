@@ -11,8 +11,8 @@ main() {
 
     read mach 2>/dev/null </sys/class/dmi/id/product_name
     getty_t=$(get_t getty)
-    icon_t=$(get_t "rox|space")
-      wm_t=$(get_t "icewm|fluxbox")
+    icon_t=$(get_t "rox\>|space")
+      wm_t=$(get_t "icewm|fluxbox|jwm")
    conky_t=$(get_t "conky")
 
     date=$(date +"%F %T")
