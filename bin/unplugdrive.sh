@@ -57,22 +57,45 @@ selected=$(yad --list --width="300" --height="350"  --text=$"The following are c
       yad --text=$"Nothing selected.\nAborting without unmounting."
       exit 1
    fi
+echo selected is $selected
 
 # Create a list of mountpoints used by the drives selected to be unplugged
-mountpointlist=""
+declare -a mountpointlist
 mountpointnow=""
+
+TEMPFILE=/tmp/unpluglist
 for item in $selected;do
-   mountpointnow=$(pmount|grep $item|cut -d " " -f 3)
-   mountpointlist="$mountpointlist$mountpointnow "
+   if [ "$item" = "TRUE" ] ||[ "$item" = "FALSE" ]; then
+	echo "nothing"
+   else
+   #mountpointnow=$(df |grep $item|awk -F "% " '{print $2}')
+   df |grep $item|awk -F "% " '{print $2}'| tee -a $TEMPFILE  
+   fi
 done
+OLDIFS=$IFS
+IFS=$'\n'
+mountpointlist=(`cat $TEMPFILE`)
+   echo mountlist0 is ${mountpointlist[0]}
+   echo mountlist1 is ${mountpointlist[1]}
+   echo mountlist2 is ${mountpointlist[2]}
+   rm -f $TEMPFILE
+
 
 # Create a list summarising what is about to be unmounted
+IFS=$OLDIFS
 summarylist=""
 summarypoint=""
 for item in $selected;do
-   summarypoint=$(pmount|grep $item|cut -d " " -f 1,2,3|cut -c 6-)
+   if [ "$item" = "TRUE" ] ||[ "$item" = "FALSE" ]; then
+	echo "nothing"
+   else
+   echo item is $item
+   summarypoint=$(df --output=source,target |grep $item)
+   echo summarypoint is $summarypoint
    summarylist="$summarylist$summarypoint\n"
+   fi
 done
+echo summary list is $summarylist
 
 # Obtain confirmation to proceed with unmounting
 yad --text=$"About to unmount:\n$summarylist\nPlease confirm you wish to proceed."
@@ -84,8 +107,15 @@ else
    yad --text=$"Data is being written to devices.\nPlease wait..." & pid1="$!"
    sync
    kill $pid1
-   for item in $mountpointlist;do
-      $(pumount $item)
+   count=${#mountpointlist[@]}
+   echo count is $count
+   i=0
+   while [ "$i" -lt "$count" ]
+   do
+    #$(pumount $item)
+	echo item $i is ${mountpointlist[i]}
+	pumount "${mountpointlist[i]}"
+	i=$[$i+1]
    done
 fi
 
@@ -93,18 +123,23 @@ fi
 postunmount=$(pmount|grep /dev/|sort|cut -d _ -f 1,2,3)
 
 # Collect details of each mountpoint that pumount failed to remove
-mountpointerror=""
+
 mountpointerrorlist=""
-for item in $mountpointlist;do
-   mountpointerror="$(echo $postunmount|grep -o $item)"
-   if [ ! -z $mountpointerror ];then
+   i=0
+   while [ "$i" -lt "$count" ]
+   do
+   echo error check mount point ${mountpointlist[i]}
+ 	mountpointerror=$(pmount|grep /dev/|sort|cut -d _ -f 1,2,3|grep -o "${mountpointlist[i]}")
+ 	echo mountpointerror is $mountpointerror
+	if [ ! -z "$mountpointerror" ];then
       mountpointerrorlist="$mountpointerrorlist$mountpointerror\n"
    fi
-done
+   i=$[$i+1]
+   done
 
 # Display a message if unmount failed
 if [ ! -z "$mountpointerrorlist" ];then
-   yad--text=$"Mountpoint removal failed.\n\nA mountpoint remains present at:\n$mountpointerrorlist\nCheck each mountpoint listed before unpluging the drive(s)."
+   yad --text=$"Mountpoint removal failed.\n\nA mountpoint remains present at:\n$mountpointerrorlist\nCheck each mountpoint listed before unpluging the drive(s)."
    exit 1
 else
    # Display a message if unmount successful   
