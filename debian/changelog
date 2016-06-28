@@ -1,3 +1,9 @@
+antix-goodies (0.5.14) unstable; urgency=medium
+
+  * Line 90 space error fixed 
+
+ -- anticapitalista <antix@operamail.com>  Tue, 28 Jun 2016 13:20:22 +0300
+
 antix-goodies (0.5.13) unstable; urgency=medium
 
   * Fixed unplugdrive.sh script to work with devices with labels with spaces

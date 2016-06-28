@@ -87,7 +87,7 @@ if [ -f /etc/modprobe.d/broadcom-sta-dkms.conf ]; then
   sed -i 's/blacklist b44$/#blacklist b44/;s/blacklist ssb/#blacklist ssb/' /etc/modprobe.d/broadcom-sta-dkms.conf
   sed -i -e "\$ablacklist wl" /etc/modprobe.d/broadcom-sta-dkms.conf
 
-  [ -x / etc/init.d/network-manager ] && service network-manager stop
+  [ -x /etc/init.d/network-manager ] && service network-manager stop
 
   modprobe b44
   [ -x /etc/init.d/network-manager ] && service network-manager start
