@@ -1,59 +1,8 @@
-antix-goodies (0.5.14) unstable; urgency=medium
-
-  * Line 90 space error fixed 
-
- -- anticapitalista <antix@operamail.com>  Tue, 28 Jun 2016 13:20:22 +0300
-
-antix-goodies (0.5.13) unstable; urgency=medium
-
-  * Fixed unplugdrive.sh script to work with devices with labels with spaces
-
- -- anticapitalista <antix@operamail.com>  Wed, 15 Jun 2016 23:13:19 +0300
-
-antix-goodies (0.5.12) unstable; urgency=medium
-
-  * Bug fixes to boot-log script 
-
- -- anticapitalista <antix@operamail.com>  Tue, 07 Jun 2016 14:26:03 +0300
-
-antix-goodies (0.5.11) unstable; urgency=medium
-
-  * Added boot-log script 
-  * Added scripts from linuxbbq - colorview, netpro, paletterx 
-
- -- anticapitalista <antix@operamail.com>  Sun, 05 Jun 2016 13:33:43 +0300
-
-antix-goodies (0.5.10) unreleased; urgency=medium
-
-  * Added uplugdrive translation for Swedish.
-  * Added Russian translation
-
- -- anticapitalista <antix@operamail.com>  Mon, 30 May 2016 18:12:19 +0300
-
-antix-goodies (0.5.9) unstable; urgency=medium
-
-  * fixed space in / etc in BroadcomStartup script
-
- -- anticapitalista <antix@operamail.com>  Mon, 16 May 2016 12:03:58 +0300
-
-antix-goodies (0.5.8) unstable; urgency=medium
-
-  * Added check statement on network-manager 
-  * Make deb for all architecture
-
- -- anticapitalista <antix@operamail.com>  Sat, 30 Apr 2016 12:56:00 +0300
-
-antix-goodies (0.5.7) unstable; urgency=medium
-
-  * Added 4328 id to b43Unblacklist in BroadcomStartup script 
-
- -- anticapitalista <antix@operamail.com>  Sun, 24 Apr 2016 22:04:44 +0300
-
 antix-goodies (0.5.6) unstable; urgency=medium
 
-  * Improved translations 
+  * Added pmrp - tiny radio player
 
- -- anticapitalista <antix@operamail.com>  Thu, 07 Apr 2016 14:59:19 +0300
+ -- anticapitalista <antix@operamail.com>  Fri, 17 Feb 2017 12:59:35 +0200
 
 antix-goodies (0.5.5) unstable; urgency=low 
  
