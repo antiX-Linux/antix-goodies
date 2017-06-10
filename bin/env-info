@@ -112,6 +112,11 @@ print-colors() {
     echo -e "$rst\n"
 }
 
+print-init() {
+    init=$(strings /sbin/init | awk 'match($0, /(upstart|systemd|sysvinit|busybox)/) { print substr($0, RSTART, RLENGTH);exit; }')
+    color-echo Init $init
+}
+
 echo
 print-distro
 print-kernel
@@ -121,6 +126,7 @@ print-pkgs
 print-shell
 #print-de
 print-wm
+print-init
 print-gtk
 print-disk
 print-mem
