@@ -1,10 +1,10 @@
 Source: antix-goodies
 Section: system
 Priority: optional
-Maintainer: anticapitalista <antix@operamail.com>
+Maintainer: anticapitalista <anticapitalista@riseup.net>
 Build-Depends: debhelper (>= 9.20120115)
-Standards-Version: 3.9.4
-Homepage: http://antix.mepis.org
+Standards-Version: 3.9.8
+Homepage: https://github.com/antiX-Linux/antix-goodies
 
 Package: antix-goodies
 Architecture: all
