@@ -1,0 +1,97 @@
+#!/bin/bash
+
+ME=${0##*/}
+
+TIME_OUT=60
+
+SIGNAL="TERM"
+
+usage() {
+    local ret=${1:-0}
+cat<<Usage
+Usage: $ME <options> pid1 pid2 ...
+
+Wait a fixed amount of time and then kill the given processes.
+
+Options:
+    -h --help        Show this usage
+    -s --signal=xxx  Send signal xxx instead of $SIGNAL
+    -t --timeout=nn  Timeout after nn seconds (default: $TIME_OUT)
+Usage
+    exit $ret
+}
+
+main() {
+
+    local SHIFT=0 SHORT_STACK="hts"
+
+    [ $# -eq 0 ] && usage
+
+
+    read_args "$@"
+    shift $SHIFT
+
+    [ $# -eq 0 ] && fatal "Must provide at least one PID"
+    PIDS="$*"
+
+    #echo "timeout: $TIME_OUT"
+    local count
+    for count in $(seq 1 $TIME_OUT); do
+        local pid new_pids=
+        for pid in $PIDS; do
+            test -d /proc/$pid || continue
+            new_pids="$new_pids $pid"
+        done
+        
+        [ -z "$new_pids" ] && exit 0
+        PIDS=$new_pids
+        sleep 1
+    done
+    kill -${SIGNAL#-} $PIDS
+}
+
+read_args() {
+    while [ $# -gt 0 -a -n "$1" -a -z "${1##-*}" ]; do
+        local arg=${1#-} val=
+        shift ; SHIFT=$((SHIFT + 1))
+
+        case $arg in
+            [$SHORT_STACK][$SHORT_STACK]*)
+                if echo "$arg" | grep -q "^[$SHORT_STACK]\+$"; then
+                    set -- $(echo $arg | sed -r 's/([a-zA-Z])/ -\1 /g') "$@"
+                    continue
+                fi;;
+        esac
+
+        case $arg in 
+            -timeout|-signal|[st])
+                [ $# -lt 1 ] && fatal "Expected a parameter after: -$arg"
+                val=$1
+                shift ; SHIFT=$((SHIFT + 1)) ;;
+            *=*) 
+                val=${arg#*=}
+                arg=${arg%%=*} ;;
+             *) 
+                 val="???" ;;
+        esac
+
+        case $arg in
+                       -help|h) usage           ;;
+                    -timeout|t) TIME_OUT=$val   ;;
+                -timeout=*|t=*) TIME_OUT=$val   ;;
+                     -signal|s) SIGNAL=$val     ;;
+                -signal=*|s=*) SIGNAL=$val      ;;
+                            *) fatal "Unknown parameter -%s" "$arg"
+        esac
+    done
+}
+
+fatal() {
+    local fmt=$1  ;  shift
+    printf "$ME error: $fmt\n" "$@" >&2
+    exit 3
+}
+
+main "$@"
+
+

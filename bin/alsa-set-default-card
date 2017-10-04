@@ -5,6 +5,8 @@
 
 source /usr/local/lib/antiX/antiX-common.sh  "$@"
 
+TITLE="Select Default ALSA card"
+
 SPEAKER_TEST_OPTS="-c 2 -t wav -l 2"
 ASOUND_FILE=$HOME/.asoundrc
 main() {
@@ -16,12 +18,16 @@ main() {
         test -r $card_file || card_file=/dev/null
         local cards=$(sed -n -r 's/[0-9 ]+\[//p' $card_file | sed 's/\s*\]:/:/')
 
+        #cards=$(echo "$cards" | head -n1)
+        #cards=
         vmsg "\nSound cards:\n$cards"
 
-        test -n "$cards" || error_box "$(gt "No sound cards/devices were found")"
+        test -n "$cards" || exit_box "$(gt "No sound cards/devices were found.  Nothing to do.")"
 
         if [ "$(echo "$cards" | wc -l)" -lt 2 ]; then
-            error_box "$(gt "Only one sound was card found.")"
+            exit_box "$(gt "Only one sound card was found:")"  \
+            "[b]$cards[/b]" \
+            "Nothing to do"
         fi
 
         local card scard_options=
@@ -30,9 +36,9 @@ main() {
         done <<Read_Cards
 $(echo "$cards")
 Read_Cards
-        test -n "$scard_options" || error_box "$(gt "No sound cards/devices were found")"
+        test -n "$scard_options" || exit_box "$(gt "No sound cards/devices were found.  Nothing to do.")"
 
-        local prev_card=$(sed -n -r 's/^\s*defaults.pcm.!card\s+(.*)/\1/p' $ASOUND_FILE | head -n 1)
+        local prev_card=$(sed -n -r 's/^\s*defaults.pcm.!card\s+(.*)/\1/p' $ASOUND_FILE 2>/dev/null | head -n 1)
         local prev_line=
         [ "$prev_card" ] && prev_line=$(pfgt "Current default is %s" "[b]$prev_card[/b]")
         vmsg "prev_card: $prev_card"

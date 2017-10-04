@@ -29,3 +29,5 @@ Description: Various useful scripts for antiX.
   * netpro - save and switch network profiles (linuxbbq)
   * paletterx - takes an image and creates a color palette from it - needs imagemagick (linuxbbq)
   * pmrp (Poor Man's Radio Player - thanks to hakerdefo)
+  * process-reaper (process killer)
+

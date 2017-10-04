@@ -1,0 +1,11 @@
+#!/bin/bash
+
+case $(tty) in
+    */pts/*) arg=            ;;
+          *) arg="--vo=drm"  ;;
+esac
+
+[ -n "$DISPLAY" ] && arg=
+
+/usr/bin/mpv $arg "$@"
+

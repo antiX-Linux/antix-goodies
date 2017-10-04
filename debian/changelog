@@ -1,6 +1,25 @@
+antix-goodies (0.5.21) unstable; urgency=medium
+
+  * added process-reaper
+  * Prevent spurious sed error message to alsa-set-default-card
+  
+ -- anticapitalista <antix@operamail.com>  Wed, 27 Sep 2017 17:43:25 +0300
+
+antix-goodies (0.5.20) unstable; urgency=medium
+
+  * Updated translations for alsa-set-default-card
+
+ -- anticapitalista <antix@operamail.com>  Mon, 28 Aug 2017 11:08:34 +0100
+
+antix-goodies (0.5.19) unstable; urgency=medium
+
+  * added mpv wrapper to play videos in vt as well as in X
+
+ -- anticapitalista <antix@operamail.com>  Fri, 28 Jul 2017 15:33:39 +0100
+
 antix-goodies (0.5.18) unstable; urgency=medium
 
-  * pdted pmrp
+  * updated pmrp
 
  -- anticapitalista <antix@operamail.com>  Tue, 27 Jun 2017 18:18:26 +0300
 
