@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Poor Man's Radio Player
+Comment=Simple Radio Player.
+Exec=x-terminal-emulator -e pmrp
+Icon=library-internet-radio
+Terminal=false
+Type=Application
+Categories=AudioVideo;Audio;Player;
+NoDisplay=False

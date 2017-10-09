@@ -1,4 +1,5 @@
 locale/*	    /usr/share/locale
 bin/*               /usr/local/bin 
 Sound_Card.desktop  /usr/share/applications/antix 
+pmrp.desktop 		/usr/share/applications/antix 
 soundcard.png        /usr/share/pixmaps
