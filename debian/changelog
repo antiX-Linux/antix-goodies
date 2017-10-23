@@ -1,3 +1,9 @@
+antix-goodies (0.6.1) unreleased; urgency=medium
+
+  * Improved translations
+
+ -- anticapitalista <antix@operamail.com>  Sun, 22 Oct 2017 14:07:44 +0300
+
 antix-goodies (0.6.0) unstable; urgency=medium
 
   * Moved soundcard desktop entry to Audio/video section
