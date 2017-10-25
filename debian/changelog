@@ -1,3 +1,9 @@
+antix-goodies (0.6.2) unstable; urgency=medium
+
+  * Added mpg123 as a depedency - needed by pmrp
+
+ -- anticapitalista <antix@operamail.com>  Mon, 23 Oct 2017 17:52:32 +0300
+
 antix-goodies (0.6.1) unreleased; urgency=medium
 
   * Improved translations

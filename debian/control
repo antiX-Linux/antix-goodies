@@ -8,7 +8,7 @@ Homepage: https://github.com/antiX-Linux/antix-goodies
 
 Package: antix-goodies
 Architecture: all
-Depends: perl, wodim, yad, pmount
+Depends: perl, wodim, yad, pmount, mpg123 
 Description: Various useful scripts for antiX.
  Includes:
   * alsa-set-default-card (helps user set default sound card if more than one is available)
