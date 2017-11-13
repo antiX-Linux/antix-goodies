@@ -1,16 +1,24 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Sound Card Chooser
+Name[ca]=Tarja de so
+Name[de]=Soundkarte
 Name[el]=Sound Card
 Name[es]=Tarjeta de Sondido
 Name[fr]=Carte son
+Name[it]=Scheda Audio
 Name[nl]=Geluidskaart
+Name[pt]=Placa de som
 Name[sv]=Ljudkort
 Comment=Select sound card to use.
+Comment[ca]=Tria quina tarja de so cal usar
+Comment[de]=Wähle die Soundkarte aus
 Comment[el]=Επιλέξτε κάρτα ήχου για χρήση.
 Comment[es]=Seleccionar tarjeta de sonido a utilizar
 Comment[fr]=Choix de la carte son à utiliser
+Comment[it]=Scegliere la scheda audio da usare
 Comment[nl]=Selecteer geluidskaart om te gebruiken.
+Comment[pt]=Seleccionar a placa de som a usar
 Comment[sv]=Välj vilket ljudkort som ska användas
 Exec=alsa-set-default-card
 Icon=soundcard.png
