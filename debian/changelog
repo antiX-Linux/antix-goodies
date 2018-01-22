@@ -1,3 +1,9 @@
+antix-goodies (0.6.3) unstable; urgency=medium
+
+  * using zram script from SamK
+
+ -- anticapitalista <antix@operamail.com>  Wed, 20 Dec 2017 19:22:02 +0200
+
 antix-goodies (0.6.2) unstable; urgency=medium
 
   * Added mpg123 as a depedency - needed by pmrp
