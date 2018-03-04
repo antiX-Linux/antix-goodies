@@ -1,3 +1,9 @@
+antix-goodies (0.6.4) unstable; urgency=medium
+
+  * New and better translations
+
+ -- anticapitalista <antix@operamail.com>  Fri, 02 Mar 2018 16:46:22 +0200
+
 antix-goodies (0.6.3) unstable; urgency=medium
 
   * using zram script from SamK
