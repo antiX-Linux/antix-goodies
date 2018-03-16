@@ -1,3 +1,9 @@
+antix-goodies (0.6.5) unstable; urgency=medium
+
+  * added tinyradio
+
+ -- anticapitalista <antix@operamail.com>  Thu, 15 Mar 2018 13:40:29 +0200
+
 antix-goodies (0.6.4) unstable; urgency=medium
 
   * New and better translations

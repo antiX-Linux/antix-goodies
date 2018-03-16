@@ -8,7 +8,7 @@ Homepage: https://github.com/antiX-Linux/antix-goodies
 
 Package: antix-goodies
 Architecture: all
-Depends: perl, wodim, yad, pmount, mpg123 
+Depends: perl, wodim, yad, pmount, mpg123, xosd-bin
 Description: Various useful scripts for antiX.
  Includes:
   * alsa-set-default-card (helps user set default sound card if more than one is available)
@@ -30,4 +30,5 @@ Description: Various useful scripts for antiX.
   * paletterx - takes an image and creates a color palette from it - needs imagemagick (linuxbbq)
   * pmrp (Poor Man's Radio Player - thanks to hakerdefo)
   * process-reaper (process killer)
+  * tinyradio - thanks to linuxbbq
 
